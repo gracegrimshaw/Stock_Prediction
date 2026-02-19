@@ -60,7 +60,9 @@ MODEL_INFO = {
         "explainer": 'explainer.shap',
         "pipeline": 'finalized_model.tar.gz',
         "keys": ['MSFT', 'ADBE', 'ORCL', 'SAP', 'NASDAQ_Return', 'CRM_Momentum_5', 'CRM_HighLow_Spread'],
-        "inputs": [{"name": k, "type": "number", "min": -1.0, "max": 1.0, "default": 0.0, "step": 0.01} for k in ["MSFT", "ADBE", "ORCL", "SAP", "NASDAQ_Return", "CRM_Momentum_5", "CRM_HighLow_Spread"]
+        "inputs": [{"name": k, "type": "number", "min": -1.0, "max": 1.0, "default": 0.0, "step": 0.01}
+        for k in ["MSFT", "ADBE", "ORCL", "SAP", "NASDAQ_Return", "CRM_Momentum_5", "CRM_HighLow_Spread"]
+    ]
 }
 
 def load_pipeline(_session, bucket, key):
@@ -151,6 +153,7 @@ if submitted:
         display_explanation(input_df,session, aws_bucket)
     else:
         st.error(res)
+
 
 
 
