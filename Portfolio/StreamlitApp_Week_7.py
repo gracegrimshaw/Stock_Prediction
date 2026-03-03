@@ -61,7 +61,7 @@ df_features = extract_features_pair()
 
 
 MODEL_INFO = {
-        "endpoint": AWS_ENDPOINT,
+        "endpoint": aws_endpoint_bitcoin,
         "explainer": 'explainer_pair.shap',
         "pipeline": 'finalized_pair_model.tar.gz',
         "keys": ['AAPL', 'MPWR'],
@@ -166,6 +166,7 @@ if submitted:
         display_explanation(input_df,session, aws_bucket)
     else:
         st.error(res)
+
 
 
 
