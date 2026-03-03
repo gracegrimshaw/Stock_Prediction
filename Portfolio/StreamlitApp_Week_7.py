@@ -59,10 +59,6 @@ sm_session = sagemaker.Session(boto_session=session)
 # Data & Model Configuration
 df_features = extract_features_pair()
 
-# Dynamic bounds for Bitcoin model
-MIN_VAL = 0.5 * df_prices.iloc[:, 0].min()
-MAX_VAL = 2.0 * df_prices.iloc[:, 0].max()
-DEFAULT_VAL = df_prices.iloc[:, 0].mean()
 
 MODEL_INFO = {
         "endpoint": AWS_ENDPOINT,
@@ -170,6 +166,7 @@ if submitted:
         display_explanation(input_df,session, aws_bucket)
     else:
         st.error(res)
+
 
 
 
