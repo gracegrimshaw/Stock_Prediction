@@ -57,17 +57,19 @@ session = get_session(aws_id, aws_secret, aws_token)
 sm_session = sagemaker.Session(boto_session=session)
 
 # Data & Model Configuration
+# Data & Model Configuration
 df_features = extract_features_pair()
 
-
 MODEL_INFO = {
-        "endpoint": aws_endpoint_bitcoin,
-        "explainer": 'explainer_pair.shap',
-        "pipeline": 'finalized_pair_model.tar.gz',
-        "keys": ['AAPL', 'MPWR'],
-        "inputs": [{"name": k, "type": "number", "min": 0.0, "default": 0.0, "step": 10.0} for k in  ['AAPL', 'MPWR']]
+    "endpoint": aws_endpoint_bitcoin,
+    "explainer": "explainer_pair.shap",
+    "pipeline": "finalized_pair_model.tar.gz",
+    "keys": ["ECL", "CRM"],
+    "inputs": [
+        {"name": k, "type": "number", "min": 0.0, "default": 0.0, "step": 1.0}
+        for k in ["ECL", "CRM"]
+    ]
 }
-
 def load_pipeline(_session, bucket, key):
     s3_client = _session.client('s3')
     filename=MODEL_INFO["pipeline"]
