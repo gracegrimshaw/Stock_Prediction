@@ -156,15 +156,15 @@ with st.form("pred_form"):
     submitted = st.form_submit_button("Run Prediction")
 
 if submitted:
-
     data_row = [user_inputs[k] for k in MODEL_INFO["keys"]]
-    # Prepare data (Stock predictor uses df_features, Bitcoin uses df_prices)
-   input_df = pd.DataFrame([data_row], columns=MODEL_INFO["keys"])
-    
+
+    input_df = pd.DataFrame([data_row], columns=MODEL_INFO["keys"])
+
     res, status = call_model_api(input_df)
+
     if status == 200:
         st.metric("Prediction Result", res)
-        display_explanation(input_df,session, aws_bucket)
+        display_explanation(input_df, session, aws_bucket)
     else:
         st.error(res)
 
