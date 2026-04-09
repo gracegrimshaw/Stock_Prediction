@@ -57,7 +57,7 @@ MODEL_INFO = {
         "endpoint": aws_endpoint,
         "explainer": 'explainer_kpca.shap',
         "pipeline": 'finalized_kpca_model.tar.gz',
-        "keys": ['AOS_CR_Cum', 'ABT_CR_Cum']
+        "keys": ['AOS_CR_Cum', 'ABT_CR_Cum'],
          "inputs": [
         {"name": "AOS_CR_Cum", "type": "number", "min": -100.0, "max": 100.0, "default": 0.0, "step": 10.0},
         {"name": "ABT_CR_Cum", "type": "number", "min": -100.0, "max": 100.0, "default": 0.0, "step": 10.0}
