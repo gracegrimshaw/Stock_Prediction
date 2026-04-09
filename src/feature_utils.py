@@ -103,21 +103,21 @@ def convert_input_pca_regression(request_body, request_content_type):
 
         X = FeatureEngineer(windows=[10,15]).transform(dataset[[target]])
     
-        techIndicator_1 = 'AOS_CR_Cumm'
+        techIndicator_1 = 'AOS_CR_Cum'
         RSI_15 = json.loads(request_body)[techIndicator_1]
         techIndicator_2 = 'ABT_CR_Cum'
         MOM_15 = json.loads(request_body)[techIndicator_2]
 
         # Calculate the distance
         distances = np.sqrt(
-            (X[techIndicator_1] - AOS_CR_Cumm)**2 + 
+            (X[techIndicator_1] - AOS_CR_Cum)**2 + 
             (X[techIndicator_2] - ABT_CR_Cum)**2
         )
         
         closest_index = distances.idxmin()
         closest_row = X.loc[[closest_index]]
     
-        closest_row[techIndicator_1] = AOS_CR_Cumm
+        closest_row[techIndicator_1] = AOS_CR_Cum
         closest_row[techIndicator_2] = ABT_CR_Cum
     
         return closest_row
@@ -136,14 +136,14 @@ def convert_input_pca_regression(request_body, request_content_type):
         
         # Calculate the distance
         distances = np.sqrt(
-            (X[SP500_1] - AOS_CR_Cumm)**2 + 
+            (X[SP500_1] - AOS_CR_Cum)**2 + 
             (X[SP500_2] - ABT_CR_Cum)**2
         )
         
         closest_index = distances.idxmin()
         closest_row = X.loc[[closest_index]]
     
-        closest_row[SP500_1] = AOS_CR_Cumm
+        closest_row[SP500_1] = AOS_CR_Cum
         closest_row[SP500_2] = ABT_CR_Cum
     
         return closest_row
