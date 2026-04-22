@@ -61,11 +61,23 @@ df_features = extract_features()
 
 MODEL_INFO = {
         "endpoint": aws_endpoint,
-        "explainer": 'explainer_sentiment.shap',
+        "explainer": 'explainer_sentiment.pkl',
         "pipeline": 'finalized_sentiment_model.tar.gz',
-        "keys": ['ADBE','MSFT','JPM','sentiment_textblob'],
-        "inputs": [{"name": k, "type": "number", "min": -1.0, "max": 1.0, "default": 0.0, "step": 0.01} for k in ['ADBE','MSFT','JPM','sentiment_textblob']]
-}
+        "keys": [
+    'ADBE','MSFT','GOOG','AMZN','FB','NFLX','TSLA','WMT','AAPL',
+    'ADBE_lag1','MSFT_lag1','GOOG_lag1','AMZN_lag1','FB_lag1',
+    'NFLX_lag1','TSLA_lag1','WMT_lag1','AAPL_lag1',
+    'sentiment_textblob'
+]
+        "inputs": [
+    {"name": k, "type": "number", "min": -5.0, "max": 5.0, "default": 0.0, "step": 0.01}
+    for k in [
+        'ADBE','MSFT','GOOG','AMZN','FB','NFLX','TSLA','WMT','AAPL',
+        'ADBE_lag1','MSFT_lag1','GOOG_lag1','AMZN_lag1','FB_lag1',
+        'NFLX_lag1','TSLA_lag1','WMT_lag1','AAPL_lag1',
+        'sentiment_textblob'
+    ]
+]
 
 def load_pipeline(_session, bucket, key):
     s3_client = _session.client('s3')
@@ -112,8 +124,9 @@ def call_model_api(input_df):
         # return round(float(pred_val), 4), 200
         # For classification
         raw_pred = predictor.predict(input_df)
+        raw_pred = predictor.predict(input_df)
         pred_val = pd.DataFrame(raw_pred).values[-1][0]
-        mapping = {-1: "SELL", 0: "HOLD", 1: "BUY"}
+        return round(float(pred_val), 5), 200
         return mapping.get(pred_val), 200
     except Exception as e:
         return f"Error: {str(e)}", 500
@@ -124,7 +137,7 @@ def display_explanation(input_df, session, aws_bucket):
     explainer = load_shap_explainer(session, aws_bucket, posixpath.join('explainer', explainer_name),os.path.join(tempfile.gettempdir(), explainer_name))
     
     best_pipeline = load_pipeline(session, aws_bucket, 'sklearn-pipeline-deployment')
-    preprocessing_pipeline = Pipeline(steps=best_pipeline.steps[:-2])
+    preprocessing_pipeline = Pipeline(steps=best_pipeline.steps[:-1])
     input_df_transformed = preprocessing_pipeline.transform(input_df)
     feature_names = best_pipeline[:-2].get_feature_names_out()
     input_df_transformed = pd.DataFrame(input_df_transformed, columns=feature_names)
