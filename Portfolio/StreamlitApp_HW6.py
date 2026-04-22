@@ -68,7 +68,7 @@ MODEL_INFO = {
     'ADBE_lag1','MSFT_lag1','GOOG_lag1','AMZN_lag1','FB_lag1',
     'NFLX_lag1','TSLA_lag1','WMT_lag1','AAPL_lag1',
     'sentiment_textblob'
-]
+],
         "inputs": [
     {"name": k, "type": "number", "min": -5.0, "max": 5.0, "default": 0.0, "step": 0.01}
     for k in [
