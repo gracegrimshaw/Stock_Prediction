@@ -61,21 +61,23 @@ df_features = extract_features()
 
 MODEL_INFO = {
     "endpoint": aws_endpoint,
-    "explainer": 'explainer_sentiment.pkl',
-    "pipeline": 'finalized_sentiment_model.tar.gz',
+    "explainer": "explainer_sentiment.pkl",
+    "pipeline": "finalized_sentiment_model.tar.gz",
     "keys": [
-        'ADBE','MSFT','GOOG','AMZN','FB','NFLX','TSLA','WMT','AAPL',
-        'ADBE_lag1','MSFT_lag1','GOOG_lag1','AMZN_lag1','FB_lag1',
-        'NFLX_lag1','TSLA_lag1','WMT_lag1','AAPL_lag1',
-        'sentiment_textblob'
+        "Close",
+        "sentiment_textblob",
+        "AAPL", "ADBE", "AMZN", "FB", "GOOG", "MSFT", "NFLX", "TSLA", "WMT",
+        "AAPL_lag1", "ADBE_lag1", "AMZN_lag1", "FB_lag1", "GOOG_lag1",
+        "MSFT_lag1", "NFLX_lag1", "TSLA_lag1", "WMT_lag1"
     ],
     "inputs": [
-        {"name": k, "type": "number", "min": -5.0, "max": 5.0, "default": 0.0, "step": 0.01}
+        {"name": k, "type": "number", "min": -10.0, "max": 500.0, "default": 0.0, "step": 0.01}
         for k in [
-            'ADBE','MSFT','GOOG','AMZN','FB','NFLX','TSLA','WMT','AAPL',
-            'ADBE_lag1','MSFT_lag1','GOOG_lag1','AMZN_lag1','FB_lag1',
-            'NFLX_lag1','TSLA_lag1','WMT_lag1','AAPL_lag1',
-            'sentiment_textblob'
+            "Close",
+            "sentiment_textblob",
+            "AAPL", "ADBE", "AMZN", "FB", "GOOG", "MSFT", "NFLX", "TSLA", "WMT",
+            "AAPL_lag1", "ADBE_lag1", "AMZN_lag1", "FB_lag1", "GOOG_lag1",
+            "MSFT_lag1", "NFLX_lag1", "TSLA_lag1", "WMT_lag1"
         ]
     ]
 }
@@ -138,8 +140,8 @@ def display_explanation(input_df, session, aws_bucket):
     
     st.subheader("🔍 Decision Transparency (SHAP)")
     fig, ax = plt.subplots(figsize=(10, 4))
-    #shap.plots.waterfall(shap_values[0], max_display=10)
-    shap.plots.waterfall(shap_values[0, :, 0])
+    shap.plots.waterfall(shap_values[0])
+    top_feature = pd.Series(shap_values[0].values, index=shap_values[0].feature_names).abs().idxmax()
     st.pyplot(fig)
     # top feature 
     # top_feature = pd.Series(shap_values[0].values, index=shap_values[0].feature_names).abs().idxmax()
