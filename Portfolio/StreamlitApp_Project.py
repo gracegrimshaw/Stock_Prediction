@@ -90,13 +90,10 @@ def load_pipeline(_session, bucket, key):
         Key= f"{key}/{os.path.basename(filename)}")
         # Extract the .joblib file from the .tar.gz
     with tarfile.open(filename, "r:gz") as tar:
-        tar.extractall(path=".")
-        joblib_file = [f for f in tar.getnames() if f.endswith('.joblib')][0]
-        #joblib_file = [f for f in tar.getnames() if f.endswith('.pkl')][0]
-   
+    tar.extractall(path=".")
+    model_file = [f for f in tar.getnames() if f.endswith('.pkl')][0]
 
-    # Load the full pipeline
-    return joblib.load(f"{joblib_file}")
+return joblib.load(model_file)
 
 def load_shap_explainer(_session, bucket, key, local_path):
     s3_client = _session.client('s3')
@@ -124,7 +121,7 @@ def call_model_api(input_df):
         raw_pred = predictor.predict(input_df)
         pred_val = pd.DataFrame(raw_pred).values[-1][0]
         #mapping = {0: "SELL", 1: "HOLD", 2: "BUY"}
-        mapping = {0: "Legitimate", 1: "Fraud"}
+        mapping = {0: "Likely Fully Paid", 1: "Likely Default"}
         return mapping.get(pred_val), 200
     except Exception as e:
         return f"Error: {str(e)}", 500
