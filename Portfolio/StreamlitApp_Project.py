@@ -89,7 +89,7 @@ def load_pipeline(_session, bucket, key):
         Bucket=bucket,
         Key= f"{key}/{os.path.basename(filename)}")
         # Extract the .joblib file from the .tar.gz
-        with tarfile.open(filename, "r:gz") as tar:
+    with tarfile.open(filename, "r:gz") as tar:
         tar.extractall(path=".")
         model_file = [f for f in tar.getnames() if f.endswith('.pkl')][0]
 
