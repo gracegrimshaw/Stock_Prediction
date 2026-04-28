@@ -137,7 +137,7 @@ def display_explanation(input_df, session, aws_bucket):
     input_df=pd.DataFrame(input_df)
     input_df_transformed = preprocessing_pipeline.transform(input_df)
     feature_names = input_df.columns
-    input_df_transformed = pd.DataFrame(input_df_transformed, columns=selected_features)
+    input_df_transformed = pd.DataFrame(input_df_transformed, columns=feature_names)
     #input_df_transformed = pd.DataFrame(input_df_transformed)
     shap_values = explainer(input_df_transformed)
    
