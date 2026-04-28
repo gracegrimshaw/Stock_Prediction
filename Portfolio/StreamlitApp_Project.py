@@ -71,9 +71,9 @@ MODEL_INFO = {
     "endpoint"  : aws_endpoint,
     "explainer" : "explainer_loan_default.shap",
     "pipeline"  : "best_model.tar.gz",
-    "keys"      : ['int_rate', 'fico_range_low', 'term', 'loan_to_income'],
+    "keys"      : ['int_rate', 'last_fico_range_low', 'term', 'loan_to_income'],
     "inputs"    : [  {"name": "int_rate", "type": "number", "min": 0.0, "max": 40.0, "default": 12.0, "step": 0.1},
-        {"name": "fico_range_low", "type": "number", "min": 300.0, "max": 850.0, "default": 680.0, "step": 1.0},
+        {"name": "last_fico_range_low", "type": "number", "min": 300.0, "max": 850.0, "default": 680.0, "step": 1.0},
         {"name": "term", "type": "number", "min": 36.0, "max": 60.0, "default": 36.0, "step": 12.0},
         {"name": "loan_to_income", "type": "number", "min": 0.0, "max": 2.0, "default": 0.2, "step": 0.01}
     ]
