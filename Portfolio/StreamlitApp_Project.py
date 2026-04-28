@@ -70,7 +70,7 @@ sm_session = sagemaker.Session(boto_session=session)
 MODEL_INFO = {
     "endpoint"  : aws_endpoint,
     "explainer" : "explainer_loan_default.shap",
-    "pipeline"  : "finalized_loan_default_model.tar.gz",
+    "pipeline"  : "best_model.tar.gz",
     "keys"      : ['int_rate', 'fico_range_low', 'term', 'loan_to_income'],
     "inputs"    : [  {"name": "int_rate", "type": "number", "min": 0.0, "max": 40.0, "default": 12.0, "step": 0.1},
         {"name": "fico_range_low", "type": "number", "min": 300.0, "max": 850.0, "default": 680.0, "step": 1.0},
@@ -135,14 +135,11 @@ def display_explanation(input_df, session, aws_bucket):
     explainer = load_shap_explainer(session, aws_bucket, posixpath.join('explainer', explainer_name),os.path.join(tempfile.gettempdir(), explainer_name))
    
     best_pipeline = load_pipeline(session, aws_bucket, 'sklearn-pipeline-deployment')
-    preprocessing_pipeline = Pipeline(steps=best_pipeline.steps[:-2])
+    preprocessing_pipeline = Pipeline(steps=[
+    ('imputer', best_pipeline.named_steps['imputer'])])
     input_df=pd.DataFrame(input_df)
     input_df_transformed = preprocessing_pipeline.transform(input_df)
-    #feature_names = best_pipeline[:-3].get_feature_names_out()
-    dataset_1 = dataset.iloc[:, 0:]
-    feature_names = dataset_1.columns[1:]
-    selector = best_pipeline.named_steps['selector']
-    selected_features = feature_names[selector.get_support()]
+    feature_names = input_df.columns
     input_df_transformed = pd.DataFrame(input_df_transformed, columns=selected_features)
     #input_df_transformed = pd.DataFrame(input_df_transformed)
     shap_values = explainer(input_df_transformed)
