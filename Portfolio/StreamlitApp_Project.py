@@ -43,7 +43,6 @@ file_path = os.path.join(current_dir, 'X_train.csv')
 dataset = pd.read_csv(file_path)
 
 dataset = dataset.loc[:, ~dataset.columns.str.contains('^Unnamed')]
-dataset = dataset.drop(['Unnamed: 0'],axis=1)
 #dataset = dataset.loc[:, ~dataset.columns.str.contains('^Unnamed')]
 
 # Access the secrets
