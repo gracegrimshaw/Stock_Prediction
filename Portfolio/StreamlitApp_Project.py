@@ -89,11 +89,11 @@ def load_pipeline(_session, bucket, key):
         Bucket=bucket,
         Key= f"{key}/{os.path.basename(filename)}")
         # Extract the .joblib file from the .tar.gz
-    with tarfile.open(filename, "r:gz") as tar:
-    tar.extractall(path=".")
-    model_file = [f for f in tar.getnames() if f.endswith('.pkl')][0]
+        with tarfile.open(filename, "r:gz") as tar:
+        tar.extractall(path=".")
+        model_file = [f for f in tar.getnames() if f.endswith('.pkl')][0]
 
-return joblib.load(model_file)
+    return joblib.load(model_file)
 
 def load_shap_explainer(_session, bucket, key, local_path):
     s3_client = _session.client('s3')
